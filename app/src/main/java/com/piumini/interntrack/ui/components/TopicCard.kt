@@ -37,6 +37,7 @@ fun TopicCard(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
+            containerColor = Color.White,
             contentColor = Color.Black
         )
     ) {

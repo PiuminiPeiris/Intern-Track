@@ -3,9 +3,7 @@ package com.piumini.interntrack.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -14,6 +12,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,12 +23,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.piumini.interntrack.data.TrainingTopic
 import com.piumini.interntrack.ui.components.TopicCard
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateListOf
 import com.piumini.interntrack.ui.components.ThreadReportCard
+import com.piumini.interntrack.ui.components.CoroutineReportCard
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.piumini.interntrack.ui.components.PaginationSampleCard
+import com.piumini.interntrack.viewmodel.TrainingViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    trainingViewModel: TrainingViewModel = hiltViewModel()
+) {
     val selectedWeek = remember { mutableStateOf("Week 3") }
 
     val selectedTopic = remember { mutableStateOf<TrainingTopic?>(null) }
@@ -43,45 +47,18 @@ fun HomeScreen() {
     )
 
     val topics = remember {
-        mutableStateListOf(
-            TrainingTopic(
-                day = "Day 1",
-                title = "Compose Advance",
-                description = "Lazy Column",
-                progress = 0.9f,
-                status = "In Progress"
-            ),TrainingTopic(
-                day = "Day 2",
-                title = "Compose Advance",
-                description = "Lazy Column",
-                progress = 0.9f,
-                status = "In Progress"
-            ) ,
-            TrainingTopic(
-                day = "Day 3",
-                title = "Compose Advance",
-                description = "Lazy Column",
-                progress = 0.9f,
-                status = "In Progress"
-            ),
-            TrainingTopic(
-                day = "Day 4",
-                title = "Compose Advance",
-                description = "Lazy Column",
-                progress = 0.9f,
-                status = "In Progress"
-            ),
-            TrainingTopic(
-                day = "Day 5",
-                title = "Compose Advance",
-                description = "Lazy Column",
-                progress = 0.9f,
-                status = "In Progress"
-            )
-        )
+        mutableStateListOf<TrainingTopic>().apply {
+            addAll(trainingViewModel.getTopics())
+        }
     }
 
     val currentTopic = selectedTopic.value
+
+    LaunchedEffect(Unit) {
+        trainingViewModel.fetchRealNetworkUpdate()
+        trainingViewModel.logFirebaseTrainingEvent()
+        trainingViewModel.fetchFirebaseRemoteConfig()
+    }
 
     if (currentTopic != null) {
         TopicDetailScreen(
@@ -106,77 +83,100 @@ fun HomeScreen() {
             }
         )
     } else {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(40.dp)
+                .padding(30.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Text(
-                text = "InternTrack",
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
+            item {
+                Column {
+                    Text(
+                        text = "InternTrack",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
 
-            Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "Training Progress App",
+                        fontSize = 16.sp,
+                        color = Color.Gray
+                    )
+                }
+            }
 
-            Text(
-                text = "Training Progress App",
-                fontSize = 16.sp,
-                color = Color.Gray
-            )
-
-            Spacer(modifier = Modifier.height(22.dp))
-
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(weeks) { week->
-                    Button(
-                        onClick = {
-                            selectedWeek.value = week
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (selectedWeek.value == week) {
-                                Color.Blue
-                            } else {
-                                Color.Red
-                            },
-                            contentColor = if (selectedWeek.value == week) {
-                                Color(0xFFFFFFFF)
-                            } else {
-                                Color(0xFFFFFFFF)
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    weeks.forEach { week ->
+                        item {
+                            Button(
+                                onClick = {
+                                    selectedWeek.value = week
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (selectedWeek.value == week) {
+                                        Color.Blue
+                                    } else {
+                                        Color.Red
+                                    },
+                                    contentColor = Color.White
+                                )
+                            ) {
+                                Text(text = week)
                             }
-                        )
-                    ) {
-                        Text(text = week)
+                        }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = "${selectedWeek.value} Topics",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-            Spacer(modifier = Modifier.height(20.dp))
 
-            ThreadReportCard()
+            item {
+                Text(
+                    text = "${selectedWeek.value} Topics",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+            }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            item {
+                ThreadReportCard()
+            }
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(14.dp)
-            ) {
-                items(topics){ topic ->
+            item {
+                CoroutineReportCard()
+            }
+
+            item {
+                PaginationSampleCard(
+                    posts = trainingViewModel.posts,
+                    status = trainingViewModel.paginationStatus.value,
+                    isLoading = trainingViewModel.isLoadingPosts.value,
+                    onLoadMore = {
+                        trainingViewModel.loadNextPostPage()
+                    }
+                )
+            }
+
+//            item {
+//                DependencyInjectionCard(
+//                    repositoryStatus = trainingViewModel.getRepositoryStatus(),
+//                    topicCount = trainingViewModel.getTopicCount()
+//                )
+//            }
+
+            topics.forEach { topic ->
+                item {
                     TopicCard(
                         topic = topic,
                         onClick = {
                             selectedTopic.value = topic
-                        })
+                        }
+                    )
                 }
             }
         }

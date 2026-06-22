@@ -96,24 +96,6 @@ fun ThreadReportCard() {
                         color = Color.DarkGray,
                         fontWeight = FontWeight.Bold
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "Android Threads",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        text = "Generate progress report using background thread",
-                        fontSize = 14.sp,
-                        color = Color.DarkGray
-                    )
-
                     Spacer(modifier = Modifier.height(6.dp))
 
                     Text(

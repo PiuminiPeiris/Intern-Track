@@ -3,12 +3,12 @@ package com.piumini.interntrack.network
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitClient {
-    val apiService: GitHubApiService by lazy{
+object PostRetrofitClient {
+    val apiService: PostApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl("https://jsonplaceholder.typicode.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(GitHubApiService::class.java)
+            .create(PostApiService::class.java)
     }
 }

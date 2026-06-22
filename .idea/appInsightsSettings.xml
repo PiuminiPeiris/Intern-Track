@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.piumini.interntrack" />
+                  <option name="mobileSdkAppId" value="1:759436995294:android:61aa89ec844da71162f04f" />
+                  <option name="projectId" value="interntrack-a5064" />
+                  <option name="projectNumber" value="759436995294" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

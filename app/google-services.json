@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "759436995294",
+    "project_id": "interntrack-a5064",
+    "storage_bucket": "interntrack-a5064.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759436995294:android:61aa89ec844da71162f04f",
+        "android_client_info": {
+          "package_name": "com.piumini.interntrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvAJ4ZpjxS4GB0nsL7y1LDOUcbKde-yFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
