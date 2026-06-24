@@ -78,7 +78,7 @@ fun TopicCard(
                 Text(
                     text = topic.status,
                     fontSize = 13.sp,
-                    color = Color.Blue
+                    color = Color(0xFF7F0093)
                 )
             }
         }

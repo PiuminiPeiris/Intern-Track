@@ -156,7 +156,7 @@ fun CoroutineReportCard() {
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isSyncing.value,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF1565C0),
+                            containerColor = Color(0xFF9C27B0),
                             contentColor = Color.White
                         )
                     ) {

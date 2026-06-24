@@ -105,7 +105,7 @@ fun ThreadReportCard() {
                             "Status: Ready"
                         },
                         fontSize = 13.sp,
-                        color = Color.Blue,
+                        color = Color(0xFF7F0093),
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -146,7 +146,7 @@ fun ThreadReportCard() {
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isLoading.value,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Blue,
+                            containerColor = Color(0xFF7F0093),
                             contentColor = Color.White
                         )
                     ) {

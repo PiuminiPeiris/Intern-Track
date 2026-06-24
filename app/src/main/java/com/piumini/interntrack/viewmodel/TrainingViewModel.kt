@@ -11,6 +11,7 @@ import com.piumini.interntrack.network.PostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.piumini.interntrack.network.FastAndroidNetworkingService
 
 @HiltViewModel
 class TrainingViewModel @Inject constructor(
@@ -21,7 +22,9 @@ class TrainingViewModel @Inject constructor(
     val paginationStatus = mutableStateOf("Pagination not started")
     val currentPage = mutableStateOf(1)
     val isLoadingPosts = mutableStateOf(false)
+    val hasMorePosts = mutableStateOf(true)
     val networkStatus = mutableStateOf("Real network request not started")
+    val fastNetworkingStatus = mutableStateOf("Fast Android Networking not started")
 
     fun getTopics(): List<TrainingTopic> {
         return repository.getTrainingTopics()
@@ -53,8 +56,8 @@ class TrainingViewModel @Inject constructor(
         }
     }
 
-    fun loadNextPostPage() {
-        if (isLoadingPosts.value) return
+    fun loadNextPostsPage() {
+        if (isLoadingPosts.value || !hasMorePosts.value) return
 
         isLoadingPosts.value = true
         paginationStatus.value = "Loading page ${currentPage.value}..."
@@ -65,12 +68,18 @@ class TrainingViewModel @Inject constructor(
                     page = currentPage.value,
                     limit = 10
                 )
-                posts.addAll(newPosts)
-                posts.addAll(newPosts)
 
-                paginationStatus.value =
-                    "Page ${currentPage.value} loaded. Total posts: ${posts.size}"
-                currentPage.value = currentPage.value + 1
+                if (newPosts.isEmpty()) {
+                    hasMorePosts.value = false
+                    paginationStatus.value = "No more posts to load"
+                } else {
+                    posts.addAll(newPosts)
+
+                    paginationStatus.value =
+                        "Page ${currentPage.value} loaded. Total posts: ${posts.size}"
+
+                    currentPage.value = currentPage.value + 1
+                }
             } catch (e: Exception) {
                 paginationStatus.value = "Error loading posts: ${e.message}"
             } finally {
@@ -85,5 +94,18 @@ class TrainingViewModel @Inject constructor(
 
     fun fetchFirebaseRemoteConfig() {
         repository.fetchFirebaseRemoteConfig()
+    }
+
+    fun testFastAndroidNetworking() {
+        fastNetworkingStatus.value = "Fast Android Networking loading..."
+
+        FastAndroidNetworkingService.fetchSamplePost(
+            onSuccess = { result ->
+                fastNetworkingStatus.value = result
+            },
+            onError = { error ->
+                fastNetworkingStatus.value = error
+            }
+        )
     }
 }

@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.piumini.interntrack.ui.screens.HomeScreen
+import com.piumini.interntrack.ui.screens.LoginScreen
 import com.piumini.interntrack.ui.theme.InternTrackTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +18,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             InternTrackTheme {
-                HomeScreen()
+                val isLoggedIn = remember {
+                    mutableStateOf(false)
+                }
+
+                if (isLoggedIn.value) {
+                    HomeScreen()
+                } else {
+                    LoginScreen(
+                        onLoginSuccess = {
+                            isLoggedIn.value = true
+                        }
+                    )
+                }
             }
         }
     }

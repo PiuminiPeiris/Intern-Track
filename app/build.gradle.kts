@@ -85,4 +85,15 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-config")
+
+    //icon
+    implementation("androidx.compose.material:material-icons-extended")
+
+    implementation("com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:1.0.4") {
+        exclude(group = "com.android.support", module = "support-compat")
+        exclude(group = "com.android.support", module = "support-core-utils")
+        exclude(group = "com.android.support", module = "support-core-ui")
+        exclude(group = "com.android.support", module = "support-fragment")
+        exclude(group = "com.android.support", module = "support-annotations")
+    }
 }

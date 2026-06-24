@@ -25,13 +25,11 @@ fun ProgressCircle(progress: Float) {
             modifier = Modifier.size(72.dp)
         ) {
             drawCircle(
-                color = Color.Gray,
-                radius = size.maxDimension/2,
+                color = Color(0xFF9C27B0)  ,              radius = size.maxDimension/2,
                 style = Stroke(width = 8.dp.toPx())
             )
             drawArc(
-                color = Color.Black,
-                startAngle = -90f,
+                color = Color(0xFF33013A),                startAngle = -90f,
                 sweepAngle = 360f * progress,
                 useCenter = false,
                 style = Stroke(
@@ -44,7 +42,7 @@ fun ProgressCircle(progress: Float) {
             text = "${(progress * 100).toInt()}%",
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = Color(0xFF33013A)
         )
     }
 }
